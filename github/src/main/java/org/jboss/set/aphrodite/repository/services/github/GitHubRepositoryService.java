@@ -58,6 +58,7 @@ import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHCommitStatus;
 import org.kohsuke.github.GHException;
 import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueBuilder;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHMyself;
@@ -435,6 +436,20 @@ public class GitHubRepositoryService extends AbstractGithubService implements Re
         try {
             GHRateLimit ghRateLimit = github.getRateLimit();
             return WRAPPER.ghRateLimittoRateLimit(ghRateLimit);
+        } catch (IOException e) {
+            Utils.logException(LOG, e);
+            throw new NotFoundException(e);
+        }
+    }
+    @Override
+    public void createGithubIssue(URL url, String title, String body, String assignee) throws  NotFoundException{
+        try {
+            GHRepository repo = getGHRepository(url);
+            GHIssueBuilder issueBuilder = repo.createIssue(title);
+            issueBuilder.body(body);
+            issueBuilder.assignee(assignee);
+            issueBuilder.create();
+
         } catch (IOException e) {
             Utils.logException(LOG, e);
             throw new NotFoundException(e);

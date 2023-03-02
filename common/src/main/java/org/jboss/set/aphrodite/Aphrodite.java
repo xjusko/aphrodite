@@ -860,6 +860,17 @@ public class Aphrodite implements AutoCloseable {
         throw new NotFoundException("No commit status found for pull request:" + pullRequest.getURL());
     }
 
+    public void createGithubIssue(URL url, String title, String body, String assignee) throws NotFoundException {
+        checkRepositoryServiceExists();
+
+        for (RepositoryService repositoryService : repositories) {
+            if (repositoryService.urlExists(url) && repositoryService.repositoryAccessable(url))
+                repositoryService.createGithubIssue(url, title, body, assignee);
+                return;
+        }
+        throw new NotFoundException("Github repository not found");
+    }
+
     /**
      * Returns the streams discovered by all of the active StreamServices
      * @return a list of all streams discovered by all <code>StreamService</code> instances.
@@ -983,6 +994,8 @@ public class Aphrodite implements AutoCloseable {
         }
         throw new NotFoundException("No StreamComponent is associated with '" + repository + "' and '" + codebase + "'");
     }
+
+
 
     private void checkIssueTrackerExists() {
         if (issueTrackers.isEmpty())

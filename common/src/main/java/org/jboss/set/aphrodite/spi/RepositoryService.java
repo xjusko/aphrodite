@@ -238,4 +238,5 @@ public interface RepositoryService {
      * @return list of commits since a given date
      */
     List<Commit> getCommitsSince(URL url, String branch, long since);
+    void createGithubIssue(URL url, String title, String body, String assignee) throws NotFoundException;
 }

@@ -338,6 +338,11 @@ public class GitLabRepositoryService extends AbstractRepositoryService implement
         }
     }
 
+    @Override
+    public void createGithubIssue(URL url, String title, String body, String assignee) throws NotFoundException {
+
+    }
+
     /**
      * {@inheritDoc}
      */
